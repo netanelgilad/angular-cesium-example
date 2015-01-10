@@ -1,0 +1,159 @@
+<!doctype html>
+<html class="no-js" ng-app="angularCesiumExample">
+  <head>
+    <meta charset="utf-8">
+    <title>angularCesium</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+    <link rel="stylesheet" href="../bower_components/CesiumUnminified/Widgets/CesiumWidget/CesiumWidget.css">
+    <!-- build:css({.tmp,src}) styles/app.css -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="app/index.css">
+    <!-- endinject -->
+    <!-- endbuild -->
+
+    <!-- build:js scripts/modernizr.js -->
+    <script src="../bower_components/modernizr/modernizr.js"></script>
+    <!-- endbuild -->
+  </head>
+  <body ng-controller="MainCtrl">
+  <div class="maps">
+    <map ng-repeat="map in maps">
+      <web-map-service-layer ng-repeat="layer in layers" url="layer.url" layers="layer.layers"></web-map-service-layer>
+      <billboards-layer observable-collection="billboard in billboards"
+        image="billboard.image"
+        color="billboard.color"
+        position="billboard.position">
+      </billboards-layer>
+
+      <labels-layer>Just
+        <label ng-repeat="label in labels.getData()"
+               text="label.text"
+               color="label.color"
+               position="label.position"></label>
+      </labels-layer>
+      <!--<complexes-layer>-->
+        <!--<complex ng-repeat="car in cars">-->
+          <!--<complex-part type="billboard" name="symbol">-->
+            <!--<billboard-->
+              <!--image="assets/images/gulp.png"-->
+              <!--position="car.position"></billboard>-->
+          <!--</complex-part>-->
+        <!--</complex>-->
+      <!--</complexes-layer>-->
+    </map>
+  </div>
+  <div class="forms">
+    <h3>Maps</h3>
+    <div ng-repeat="map in maps">
+      {{ map.name }} <button ng-click="maps.splice(maps.indexOf(map),1);">Remove</button>
+    </div>
+    <div>
+      <input type="text" ng-model="newMap.name" />
+    </div>
+    <div>
+      <button ng-click="maps.push(newMap); newMap = {}">Add</button>
+    </div>
+    <h3>Layers</h3>
+    <div ng-repeat="layer in layers">
+      <div>
+        URL : {{layer.url}}, Layers : {{layer.layers}} <button ng-click="layers.splice(layers.indexOf(layer),1);">Remove</button>
+      </div>
+    </div>
+    <div>
+      <h3>Add Layer</h3>
+    </div>
+    <div>
+      Url : <input type="text" ng-model="newLayer.url"/>
+    </div>
+    <div>
+      layers : <input type="text" ng-model="newLayer.layers" />
+    </div>
+    <div>
+      <button ng-click="layers.push(newLayer); newLayer = {};">Add</button>
+    </div>
+    <h3>BillBoards</h3>
+    <div ng-repeat="billboard in billboards.getData()">
+      <div>
+        image : {{billboard.image}}, color : {{billboard.color}}, latitude : {{billboard.position.latitude}},
+        longitude : {{billboard.position.longitude}}, altitude : {{billboard.position.altitude}}
+        <button ng-click="billboards.remove(billboard._id);">Remove</button>
+      </div>
+    </div>
+    <div>
+      <h3>Add Billboard</h3>
+    </div>
+    <div>
+      image : <input type="text" ng-model="newBillboard.image"/>
+    </div>
+    <div>
+      color : <input type="text" ng-model="newBillboard.color" />
+    </div>
+    <div>
+      latitude : <input type="text" ng-model="newBillboard.position.latitude" />
+    </div>
+    <div>
+      longitude : <input type="text" ng-model="newBillboard.position.longitude" />
+    </div>
+    <div>
+      altitude : <input type="text" ng-model="newBillboard.position.altitude" />
+    </div>
+    <div>
+      <button ng-click="billboards.add(billboardsId, newBillboard); billboardsId = billboardsId + 1; newBillboard = { position: {}};">Add</button>
+    </div>
+    <h3>Labels</h3>
+    <div ng-repeat="label in labels.getData()">
+      <div>
+        text : {{label.image}}, color : {{label.color}}, latitude : {{label.position.latitude}},
+        longitude : {{label.position.longitude}}, altitude : {{label.position.altitude}}
+        <button ng-click="labels.getData().splice(labels.getData().indexOf(label),1);">Remove</button>
+      </div>
+    </div>
+    <div>
+      <h3>Add Label</h3>
+    </div>
+    <div>
+      text : <input type="text" ng-model="newLabel.text"/>
+    </div>
+    <div>
+      color : <input type="text" ng-model="newLabel.color" />
+    </div>
+    <div>
+      latitude : <input type="text" ng-model="newLabel.position.latitude" />
+    </div>
+    <div>
+      longitude : <input type="text" ng-model="newLabel.position.longitude" />
+    </div>
+    <div>
+      altitude : <input type="text" ng-model="newLabel.position.altitude" />
+    </div>
+    <div>
+      <button ng-click="labels.push(newLabel); newLabel= { position: {}};">Add</button>
+    </div>
+  </div>
+
+    <script src="../bower_components/CesiumUnminified/Cesium.js"></script>
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/observable-collection/observableCollection.js"></script>
+    <script src="../bower_components/angular-cesium/dist/angular-cesium.min.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,src}) scripts/app.js -->
+    <!-- inject:js -->
+    <script src="components/navbar/navbar.controller.js"></script>
+    <script src="app/main/main.controller.js"></script>
+    <script src="app/index.js"></script>
+    <!-- endinject -->
+
+    <!-- inject:partials -->
+    <!-- angular templates will be automatically converted in js and inserted here -->
+    <!-- endinject -->
+    <!-- endbuild -->
+
+  </body>
+</html>
